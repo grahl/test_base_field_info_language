@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * @file
+ * Contains test_base_field_info_language.module.
+ */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function test_base_field_info_language_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the test_base_field_info_language module.
+    case 'help.page.test_base_field_info_language':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Example abstracted from LDAP User') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function test_base_field_info_language_entity_base_field_info(EntityTypeInterface $entity_type) {
+  if ($entity_type->id() == 'user') {
+    $fields = [];
+
+    $fields['ldap_user_puid_sid'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('LDAP server ID'))
+      ->setDescription(t('Server ID  that PUID was derived from. NULL if PUID is independent of server configuration instance.'));
+
+    /*
+    $fields['ldap_user_puid'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Permanent unique ID'))
+      ->setDescription(t('The user\'s permanent unique ID should never change for a given ldap identified user.'));
+
+    $fields['ldap_user_puid_property'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('PUID base property'))
+      ->setDescription(t('The LDAP property used for the PUID, for example "dn".'));
+
+    $fields['ldap_user_current_dn'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('LDAP DN'))
+      ->setDescription(t('The user\'s LDAP DN. May change when user\'s DN changes.'));
+
+    $fields['ldap_user_prov_entries'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Provisioned LDAP entries'))
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
+
+    $fields['ldap_user_last_checked'] = BaseFieldDefinition::create('timestamp')
+      ->setLabel(t('Last LDAP comparison'))
+      ->setDescription(t('Unix timestamp of when Drupal user was compared to ldap entry. This could be for purposes of syncing, deleteing drupal account, etc.'));
+
+    $fields['ldap_user_ldap_exclude'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Exclude from LDAP'))
+      ->setDescription(t('Whether to exclude the user from LDAP functionality.'));
+    */
+    return $fields;
+  }
+}
